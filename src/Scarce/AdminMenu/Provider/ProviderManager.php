@@ -4,10 +4,13 @@ namespace Scarce\AdminMenu\Provider;
 
 use pocketmine\plugin\Plugin;
 use poggit\libasynql\DataConnector;
+use poggit\libasynql\libasynql;
+use Scarce\AdminMenu\Provider\bans\BanProvider;
 use Scarce\AdminMenu\Provider\Player\PlayerProvider;
 
 class ProviderManager{
 
+    public static $database;
     public static $instance;
     private static $dbs = [];
     private static $providers = [];
@@ -15,7 +18,15 @@ class ProviderManager{
     public function __construct(Plugin $plugin)
     {
         self::$instance = $this;
+        self::$database = libasynql::create($plugin, $plugin->getConfig()->get("AdminMenu"), [
+            "sqlite" => "AdminMenu.ql"
+        ]);
         self::$providers["PlayerProvider"] = new PlayerProvider($plugin);
+        self::$providers["BanProvider"] = new BanProvider($plugin);
+    }
+
+    public static function getDataBase():DataConnector{
+        return self::$database;
     }
 
 
@@ -34,6 +45,11 @@ class ProviderManager{
 
     public static function getDataBases(){
         return self::$dbs;
+    }
+
+
+    public static function getInstance(){
+        return self::$instance;
     }
 
 

@@ -4,10 +4,10 @@ namespace Scarce\AdminMenu\Provider;
 
 interface IProvider{
 
-    public function create($args);
+    public static function create($args);
 
-    public function load($args, $callable);
+    public static function load($args, $callable);
 
-    public function update($args);
+    public static function update($args);
 
 }

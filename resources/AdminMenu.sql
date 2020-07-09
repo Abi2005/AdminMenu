@@ -58,16 +58,39 @@ SELECT * FROM players
 CREATE TABLE if NOT EXISTS bans(
 player_name VARCHAR(36),
 reason      TEXT,
-admin       TEXT
+admin       TEXT,
+ban_type    INTEGER,
+duration    INTEGER
 );
 -- #}
 -- #{ create
 -- #    :player_name string
 -- #    :reason string
 -- #    :admin string
+-- #    :ban_type int
+-- #    :duration int
 INSERT INTO bans(player_name, reason, admin)
 VALUES(:player_name, :reason, :admin)
 -- #}
 -- #{ load
 SELECT * FROM bans
+-- #}
+-- #{ update
+-- #    :player_name string
+-- #    :reason string
+-- #    :admin string
+-- #    :ban_type int
+-- #    :duration int
+UPDATE bans
+SET
+reason=:reason,
+admin=:admin,
+ban_type=:ban_type,
+duration=:duration
+WHERE player_name = :player_name
+-- #}
+-- #{ delete
+-- #    :player_name string
+DELETE bans
+WHERE player_name=:player_name
 -- #}
